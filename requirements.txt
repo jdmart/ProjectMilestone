@@ -8,3 +8,7 @@ pandas==0.24.2
 pip==19.0.3
 requests==2.20.0
 simplejson==3.16.0
+flask-wtf==0.14.2
+wtforms==2.2.1
+flash==1.2.11
+
