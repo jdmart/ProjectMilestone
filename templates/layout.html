@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Skeleton application demoing Heroku and Flask integration.">
+    <meta name="author" content="@gotoariel">
+    <!-- <link rel="icon" href="favicon.ico"> -->
+
+    <title>Project Milestone</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    {% block headers %}{% endblock %}
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-left">
+          <h2>Menu:</h2>
+          <ul>
+            <li><a href="/about">about</a></li>
+            <li><a target="_blank" href="https://www.heroku.com/">heroku</a></li>
+            <li><a target="_blank" href="http://flask.pocoo.org/">flask</a></li>
+            <li><a target="_blank" href="https://jinja.pocoo.org/docs/2.9/">jinja2</a></li>
+            <li><a target="_blank" href="https://getbootstrap.com/">bootstrap</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-left">
+
+          {% block content %}{% endblock %}
+
+        </div>
+      </div>
+    </div>
+
+    <!-- bootstrap core javascript
+    ================================================== -->
+    <!-- placed at the end of the document so the pages load faster -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>
