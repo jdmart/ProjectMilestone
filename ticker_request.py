@@ -3,7 +3,8 @@ from wtforms import TextField, IntegerField, TextAreaField, SubmitField, RadioFi
 from wtforms import validators, ValidationError
 
 class TickerInputs(Form):
-   ticker = TextField("Stock Ticker:",[validators.Required("Please enter a valid stock ticker.")])
+   ticker = TextField("Stock Ticker:", [validators.DataRequired(
+       "Please enter a valid stock ticker.")], default='GOOG')
 
    opening = BooleanField('Opening Price')
    closing = BooleanField('Closing Price')

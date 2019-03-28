@@ -47,9 +47,6 @@ def getTickers():
 @app.route('/', methods=['POST','GET'])
 def index():
   form = TickerInputs(request.form)
-  form.ticker.data='GOOG'
-
-  # getTickers()
 
   if request.method == 'POST':
     if form.validate() == False:
@@ -88,14 +85,12 @@ def graph():
     ticker = request.args.get('ticker')
 
     response = requestGetData('json', ticker)
-    print(response.text, file=sys.stdout)
     response2 = requestGetMetadata('json')
 
     WIKIP = json.loads(response.text)
     metadata = json.loads(response2.text)
 
     columns = [dct['name'] for dct in metadata['datatable']['columns']]
-    print(columns, file=sys.stdout)
     wikipdf = pandas.DataFrame(WIKIP['datatable']['data'], columns=columns)
 
     ### convert generic date objects to datetime objects and set datetime as index
@@ -105,11 +100,9 @@ def graph():
     ### plotting requested parameters
     p = figure()
     numlines = len(request.args)-3
-    print(numlines, file=sys.stdout)
     mypalette = Spectral11[0:numlines]
     linenum = 0
     for key, value in request.args.items():
-      print((key, value), file=sys.stdout)
       if key in plot_params:
         data = wikipdf[plot_params[key]]
 
