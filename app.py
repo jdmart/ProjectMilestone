@@ -9,6 +9,7 @@ from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.models import DatetimeTickFormatter
 from bokeh.palettes import Spectral11
+from bokeh.models import Range1d
 
 import pandas
 import zipfile
@@ -90,6 +91,8 @@ def graph():
     WIKIP = json.loads(response.text)
     metadata = json.loads(response2.text)
 
+    # print(json.dumps(metadata, indent=4, sort_keys=True), file=sys.stdout)
+
     columns = [dct['name'] for dct in metadata['datatable']['columns']]
     wikipdf = pandas.DataFrame(WIKIP['datatable']['data'], columns=columns)
 
@@ -97,26 +100,41 @@ def graph():
     wikipdf['date'] = pandas.to_datetime(wikipdf['date'])
     wikipdf.set_index('date', inplace=True)
 
+    daterange = wikipdf.index.values
+    print(daterange, file=sys.stdout)
+
     ### plotting requested parameters
-    p = figure()
+    datelimit = 21
+    p = figure(x_range=(daterange[datelimit], daterange[0]))
     numlines = len(request.args)-3
     mypalette = Spectral11[0:numlines]
     linenum = 0
+    minval = float('inf')
+    maxval = float('-inf')
     for key, value in request.args.items():
       if key in plot_params:
         data = wikipdf[plot_params[key]]
 
+        # plot last 4 weeks of data
         x = data.index
         y = data.values
+
+        if min(y[:datelimit]) < minval:
+          minval = min(y[:datelimit])
+
+        if max(y[:datelimit]) > maxval:
+          maxval = max(y[:datelimit])
 
         legend_str = key.capitalize() + " Price"
         p.line(x, y, legend=legend_str, line_color=mypalette[linenum])
         linenum += 1
 
 
+    print('minval = %d, maxval = %d' % (minval, maxval), file=sys.stdout)
+    p.y_range = Range1d(minval-0.1*minval, maxval+0.1*maxval)
     p.xaxis[0].formatter = DatetimeTickFormatter()
     p.xaxis.axis_label = 'Date'
-    p.yaxis.axis_label = 'Price'
+    p.yaxis.axis_label = 'Price (USD)'
     p.legend.location = "top_right"
     p.legend.click_policy = "hide"
 
